@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+              display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+        }
+
+
+/* CSS */
+.button-9 {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #405cf5;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 44px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.button-9:disabled {
+  cursor: default;
+}
+
+.button-9:focus {
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-group input {
+width: 92%;
+ padding: 6px 12px;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #212529;
+                background-color: #fff;
+                background-clip: padding-box;
+                border: 1px solid #ced4da;
+
+                appearance: none;
+                border-radius: 4px;
+                transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+                :focus{
+                    color: #212529;
+                    background-color: #fff;
+                    border-color: #405cf5;
+                    outline: 0;
+                    box-shadow: 0 0 0 0.25rem #405cf5;
+                }
+                #profilePicture {
+  display: none; /* Hide the default file input */
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #45a049;
+}
+
+<!--.form-group button {-->
+<!--  padding: 8px 16px;-->
+<!--  background-color: #4CAF50;-->
+<!--  color: white;-->
+<!--  border: none;-->
+<!--  border-radius: 50%;-->
+<!--  cursor: pointer;-->
+<!--  transition: background-color 0.3s ease;-->
+<!--}-->
+
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <form id="registrationForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="profilePicture" class="custom-file-upload">Upload Profile Picture</label>
+            <input type="file" id="profilePicture" name="profilePicture" accept=".jpg, .jpeg, .png" required>
+        </div>
+        <div class="form-group">
+            <button class="button-9" type="submit">Register</button>
+        </div>
+    </form>
+    <div id="errorMessage" class="error-message"></div>
+</div>
+
+<script>
+    // JavaScript code
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var form = document.getElementById('registrationForm');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/auth/register/');
+        xhr.onload = function() {
+
+            if (xhr.status === 200) {
+            console.log("Hi")
+                var response = JSON.parse(xhr.responseText);
+                form.reset();
+                window.location.href = "/login";
+            } else {
+                var errorMessage = xhr.responseText || 'Registration failed.';
+                document.getElementById('errorMessage').textContent = errorMessage;
+            }
+        };
+        xhr.send(formData);
+    });
+</script>
+</body>
+</html>

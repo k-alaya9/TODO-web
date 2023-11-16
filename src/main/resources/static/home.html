@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Management</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+              background-color: #f0f0f0;
+        }
+
+/* CSS */
+.button-9 {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #405cf5;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 44px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.button-9:disabled {
+  cursor: default;
+}
+
+.button-9:focus {
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+/* CSS */
+.button-66 {
+  background-color: #0a6bff;
+  border-radius: 4px;
+  border: 0;
+  box-shadow: rgba(1,60,136,.5) 0 -1px 3px 0 inset,rgba(0,44,97,.1) 0 3px 6px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inherit;
+  font-family: "Space Grotesk",-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+  min-height: 56px;
+  min-width: 120px;
+  padding: 16px 20px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  transition: all .2s cubic-bezier(.22, .61, .36, 1);
+}
+
+.button-66:hover {
+  background-color: #065dd8;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .button-66 {
+    padding: 16px 44px;
+    min-width: 150px;
+  }
+}
+
+.container {
+  display: flex;
+
+}
+
+.drawer {
+  width: 300px;
+  background-color: white;
+  padding: 20px;
+}
+
+.drawer img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.drawer .username {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tasks {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.task {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffcdd2; /* red */
+  animation: colorTransition 0.3s ease;
+}
+
+.task.finished {
+  background-color: #c8e6c9; /* green */
+}
+
+.task .title {
+  font-weight: bold;
+}
+
+.task .time {
+  margin-top: 5px;
+}
+
+.task .actions {
+  margin-top: 10px;
+}
+
+.task .actions button {
+  margin-right: 5px;
+}
+
+.dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@keyframes colorTransition {
+  from {
+    background-color: #ffcdd2; /* red */
+  }
+  to {
+    background-color: #c8e6c9; /* green */
+  }
+}
+#dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+input[type="checkbox"],
+button {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="drawer">
+        <img id="profilePicture" src="" alt="Profile Picture">
+        <div class="username" id="username">Username</div>
+        <button class="button-9" onclick="openDialog()">Add Task</button>
+        <button class="button-9" onclick="logout()">Logout</button>
+    </div>
+    <div class="tasks" id="taskList">
+    </div>
+</div>
+
+<script>
+    // JavaScript code
+    // Fetch user information
+    fetch('/user')
+        .then(response => response.json())
+        .then(data => {
+        console.log(data);
+            document.getElementById('profilePicture').src = data.picPath +"?v=1";
+            document.getElementById('username').textContent = data.username;
+        })
+        .catch(error => console.error(error));
+
+    // Fetch tasks
+    fetch('/tasks')
+        .then(response => response.json())
+        .then(data => {
+            const taskList = document.getElementById('taskList');
+            data.forEach(task => {
+                const taskElement = document.createElement('div');
+               console.log(task);
+                taskElement.classList.add('task');
+                if (task.finished) {
+                    taskElement.classList.add('finished');
+                }
+                const idElement=document.createElement('div');
+                idElement.classList.add('idTask');
+                idElement.textContent=task.id;
+                taskElement.appendChild(idElement);
+                const titleElement = document.createElement('div');
+                titleElement.classList.add('title');
+                titleElement.textContent = task.title;
+                taskElement.appendChild(titleElement);
+
+                const startTimeElement = document.createElement('div');
+                startTimeElement.classList.add('time');
+                startTimeElement.textContent = 'Start Time: ' + task.startTime;
+                taskElement.appendChild(startTimeElement);
+
+                const endTimeElement = document.createElement('div');
+                endTimeElement.classList.add('time');
+                endTimeElement.textContent = 'End Time: ' + task.endTime;
+                taskElement.appendChild(endTimeElement);
+
+                const actionsElement = document.createElement('div');
+                actionsElement.classList.add('actions');
+
+                const editButton = document.createElement('button');
+                editButton.classList.add('button-66');
+                editButton.textContent = 'Edit';
+                editButton.onclick=editTask;
+                actionsElement.appendChild(editButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('button-66');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick=deleteTask;
+                actionsElement.appendChild(deleteButton);
+
+                taskElement.appendChild(actionsElement);
+
+                taskList.appendChild(taskElement);
+            });
+        })
+        .catch(error => console.error(error));
+</script>
+
+
+<!-- The dialog box -->
+<div id="dialog" class="dialog">
+    <div class="dialog-content">
+        <span class="close" onclick="closeDialog()">&times;</span>
+        <form>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title"><br><br>
+            <label for="start-time">Start Time:</label>
+            <input type="datetime-local" id="start-time" name="start-time"><br><br>
+            <label for="end-time">End Time:</label>
+            <input type="datetime-local" id="end-time" name="end-time"><br><br>
+            <label for="is-finished">Is Finished:</label>
+            <input type="checkbox" id="is-finished" name="is-finished"><br><br>
+            <button class="button-66" type="button" onclick="addTask()">Add Task</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    function logout() {
+       fetch("/logout", {
+           method: "GET",
+           headers: {
+               "Content-Type": "application/json"
+           }
+       })
+       .then(() => {
+           window.location.href = "/login";
+       })
+       .catch(error => {
+           console.error(error);
+       });
+   }
+
+       // Get the dialog box
+       var dialog = document.getElementById("dialog");
+
+       // Open the dialog box
+       function openDialog() {
+           dialog.style.display = "block";
+       }
+
+       // Close the dialog box
+       function closeDialog() {
+           dialog.style.display = "none";
+       }
+
+       // Add a task
+       function addTask() {
+           // Get the form data
+           var title = document.getElementById("title").value;
+           var startTime = document.getElementById("start-time").value;
+           var endTime = document.getElementById("end-time").value;
+           var isFinished = document.getElementById("is-finished").checked;
+
+           // Create the request body
+           var requestBody = {
+               title: title,
+               startTime: startTime,
+               endTime: endTime,
+               isFinished: isFinished
+           };
+
+           // Send the request
+           fetch("/tasks", {
+               method: "POST",
+               headers: {
+                   "Content-Type": "application/json"
+               },
+               body: JSON.stringify(requestBody)
+           })
+           .then(response => response.json())
+           .then(data => {
+               console.log(data);
+               closeDialog();
+               window.location.reload()
+           })
+           .catch(error => {
+               console.error(error);
+           });
+       }
+         // Edit a task
+         function editTask() {
+               // Get the task data
+           var idTaskElement = document.getElementsByClassName('idTask')[0];
+            var id = idTaskElement.textContent;
+           
+
+               // Send the request
+               fetch("/task/"+id, {
+                   method: "PUT",
+                   headers: {
+                       "Content-Type": "application/json"
+                   },
+               })
+               .then(()=>window.location.reload())
+               .then(data => {
+                   console.log(data);
+               })
+               .catch(error => {
+                   console.error(error);
+               });
+           }
+
+           // Delete a task
+           function deleteTask() {
+
+            var idTaskElement = document.getElementsByClassName('idTask')[0];
+            var id = idTaskElement.textContent;
+               // Send the request
+               fetch("/tasks/" + id, {
+                   method: "DELETE"
+               })
+               .then(()=>window.location.reload())
+               .then(data => {
+                   console.log(data);
+               })
+               .catch(error => {
+                   console.error(error);
+               });
+           }
+</script>
+</body>
+</html>
